@@ -6,6 +6,9 @@
 Play!
 →[ゲームはこちら](http://nismin.my-style.in/wiselyavoider/)
 
+Original BGM
+→[BGM使用はこちら](https://www.youtube.com/watch?v=9ve7689wRx8)
+
 ## ゲームの概要
 新感覚2Dパズルアクションゲーム！
 毒の床を避け前に進み続けて特典を稼ぎましょう。
