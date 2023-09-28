@@ -6,9 +6,6 @@
 Play!
 →[ゲームはこちら](http://nismin.my-style.in/wiselyavoider/)
 
-Original BGM
-→[BGM使用はこちら](https://www.youtube.com/watch?v=9ve7689wRx8)
-
 ## ゲームの概要
 新感覚2Dパズルアクションゲーム！
 毒の床を避け前に進み続けて特典を稼ぎましょう。
@@ -32,6 +29,9 @@ Original BGM
 - BGM：「Wings of my dream」/ Nismin
 - SE：効果音ラボ（[効果音ラボ](https://soundeffect-lab.info/)）
 - VOICEVOX（[VOICEVOX](https://voicevox.hiroshiba.jp/)）
+
+- Original BGM「Wings of my dream」
+→[本作BGMはこちらから視聴できます](https://www.youtube.com/watch?v=9ve7689wRx8)
 
 ## 更新情報
 - バージョン：1.0.31 for Online
