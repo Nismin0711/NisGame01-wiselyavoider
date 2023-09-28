@@ -1,0 +1,901 @@
+<html>
+
+<head>
+    <title>にすみんの大冒険 -wisely avoider-</title>
+    <meta charset="UTF-8" name="viewport" content="width=800 user-scalable=no" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.ico" />
+    <style>
+        html {
+            background-color: black;
+            touch-action: manipulation;
+        }
+
+        .screen {
+            text-align: center;
+            width: 650px;
+            height: 750px;
+            border-radius: 40px;
+            padding: 20px;
+            background-color: darkgreen;
+            margin: auto;
+        }
+
+        .display {
+            margin: 28px;
+            height: 450px;
+            border-radius: 20px;
+            background-color: skyblue;
+            display: grid;
+        }
+
+        .controler {
+            background-color: rgb(0, 200, 0);
+            border-radius: 10px;
+            height: 180px;
+            padding: 20px;
+        }
+
+        #score {
+            background-color: whitesmoke;
+            width: 250px;
+            margin: auto;
+        }
+
+        #extramanualflame {
+            color: white;
+            font-size: smaller;
+        }
+
+        #titlesc {
+            font-size: 50px;
+        }
+
+        #titlecr {
+            font-size: medium;
+        }
+
+        #titlemn {
+            text-align: right;
+        }
+
+        #item40 {
+            grid-row: 1 / 2;
+            grid-column: 1 / 2;
+        }
+
+        #item41 {
+            grid-row: 1 / 2;
+            grid-column: 2 / 3;
+        }
+
+        #item42 {
+            grid-row: 1 / 2;
+            grid-column: 3 / 4;
+        }
+
+        #item43 {
+            grid-row: 1 / 2;
+            grid-column: 4 / 5;
+        }
+
+        #item44 {
+            grid-row: 1 / 2;
+            grid-column: 5 / 6;
+        }
+
+        #item45 {
+            grid-row: 1 / 2;
+            grid-column: 6 / 7;
+        }
+
+        #item46 {
+            grid-row: 1 / 2;
+            grid-column: 7 / 8;
+        }
+
+        #item47 {
+            grid-row: 1 / 2;
+            grid-column: 8 / 9;
+        }
+
+        #item48 {
+            grid-row: 1 / 2;
+            grid-column: 9 / 10;
+        }
+
+        #cL {
+            size: 200%;
+        }
+
+        #cR {
+            size: 200%;
+        }
+
+        #cA {
+            size: 200%;
+        }
+    </style>
+
+    <script>
+        var n = 4
+        var c = 0
+        var e = 0
+        var score = 0
+        var zcount = 0
+        var bgm = new Audio('se/wings.mp3');
+        var semove = new Audio('se/move.mp3');
+        var seZ = new Audio('se/Z.mp3');
+        var seSTART = new Audio('se/title.mp3');
+        var seGAMEOVER = new Audio('se/gameover.mp3');
+
+        function start() {
+            if (c == 0) {
+                bgm.play();
+                bgm.loop = true;
+                seSTART.play();
+                let title1 = document.getElementById('titlesc');
+                let title2 = document.getElementById('titlecr');
+                let title3 = document.getElementById('titlemn');
+                title1.remove();
+                title2.remove();
+                title3.remove();
+                extratitleoff();
+                if (extra == "invsbl") {
+                } else {
+                    target = document.getElementById("item0" + n);
+                    let chara = document.createElement("img");
+                    chara.src = "chara.png";
+                    target.appendChild(chara);
+                }
+
+                document.addEventListener('keydown', keypress_iventLR);
+                document.addEventListener('keydown', keypress_iventZ);
+                let glayonL = document.getElementById("cL");
+                let glayonR = document.getElementById("cR");
+                let glayonA = document.getElementById("cA");
+                glayonL.style = ""
+                glayonR.style = ""
+                glayonA.style = ""
+                glayonL.disabled = false
+                glayonR.disabled = false
+                glayonA.disabled = false
+                c = 1
+                setwidth();
+            } else {
+                reset();
+            }
+        }
+
+        function reset() {
+            location.reload()
+        }
+
+        function L() {
+            let ran = Math.floor(Math.random() * 9);
+            let ran2 = Math.floor(Math.random() * 9);
+            let ran3 = Math.floor(Math.random() * 9);
+            let ranextra = Math.floor(Math.random() * 9);
+
+            if (n > 0) {
+                semove.play();
+                if (extra == "invsbl") {
+                    n = n - 1;
+                } else {
+                    target = document.getElementById("item0" + n);
+                    target.innerHTML = '';
+                    n = n - 1;
+                    target = document.getElementById("item0" + n);
+                    let chara = document.createElement("img");
+                    chara.src = "chara.png";
+                    target.appendChild(chara);
+
+                }
+
+                enemymovement();
+
+                enemy = document.getElementById("item4" + ran);
+                enemy.style = "background-color:#FF00FF;";
+                enemy = document.getElementById("item4" + ran2);
+                enemy.style = "background-color:#FF00FF;";
+                enemy = document.getElementById("item4" + ran3);
+                enemy.style = "background-color:#FF00FF;";
+                if (extra == "master" || extra == "hardcr") {
+                    enemy = document.getElementById("item4" + ranextra);
+                    enemy.style = "background-color:#FF00FF;";
+                }
+
+                playermovement();
+                scorecounter();
+
+            }
+
+        }
+
+        function R() {
+            let ran = Math.floor(Math.random() * 9);
+            let ran2 = Math.floor(Math.random() * 9);
+            let ran3 = Math.floor(Math.random() * 9);
+            let ranextra = Math.floor(Math.random() * 9);
+
+            if (n < 8) {
+                semove.play();
+                if (extra == "invsbl") {
+                    n = n + 1;
+                } else {
+                    target = document.getElementById("item0" + n);
+                    target.innerHTML = '';
+                    n = n + 1;
+                    target = document.getElementById("item0" + n);
+                    let chara = document.createElement("img");
+                    chara.src = "chara.png";
+                    target.appendChild(chara);
+
+                }
+
+                enemymovement();
+
+                enemy = document.getElementById("item4" + ran);
+                enemy.style = "background-color:#FF00FF;";
+                enemy = document.getElementById("item4" + ran2);
+                enemy.style = "background-color:#FF00FF;";
+                enemy = document.getElementById("item4" + ran3);
+                enemy.style = "background-color:#FF00FF;";
+                if (extra == "master" || extra == "hardcr") {
+                    enemy = document.getElementById("item4" + ranextra);
+                    enemy.style = "background-color:#FF00FF;";
+                }
+
+                playermovement();
+                scorecounter();
+
+
+            }
+
+        }
+
+        function Z() {
+            let ZnL = n - 1;
+            let ZnR = n + 1;
+            let zplace = "item1" + n;
+            let zplaceL = "item1" + ZnL;
+            let zplaceR = "item1" + ZnR;
+            if (extra == "novice") {
+                if (score > 50) {
+                    score = score - 50;
+                } else {
+                    score = 0
+                }
+            } else {
+                if (score > 100) {
+                    score = score - 100;
+                } else {
+                    score = 0
+                }
+            }
+
+            zcount = 0
+            seZ.play();
+            document.removeEventListener('keydown', keypress_iventZ);
+            target = document.getElementById("score");
+            target.innerHTML = 'SCORE ' + ("000000" + score).slice(-6);
+            let glayonA = document.getElementById("cA");
+            glayonA.disabled = true;
+            glayonA.style = "opacity:0.5;"
+            let elColoredz = document.getElementById(zplace);
+            let elColoredzL = document.getElementById(zplaceL);
+            let elColoredzR = document.getElementById(zplaceR);
+            ZnS = n
+            console.log("ZnS=" + ZnS);
+            if (ZnS == 8) {
+                elColoredz.style = "background-color:skyblue;";
+                elColoredzL.style = "background-color:skyblue;";
+            } else if (ZnS == 0) {
+                elColoredz.style = "background-color:skyblue;";
+                elColoredzR.style = "background-color:skyblue;";
+            } else {
+                elColoredz.style = "background-color:skyblue;";
+                elColoredzL.style = "background-color:skyblue;";
+                elColoredzR.style = "background-color:skyblue;";
+            }
+        }
+
+        function scorecounter() {
+            if (extra == "master") {
+                score = score + 15;
+                target = document.getElementById("score");
+                target.innerHTML = 'MASTER SCORE ' + ("000000" + score).slice(-6);
+            } else if (extra == "invsbl") {
+                score = score + 15;
+                target = document.getElementById("score");
+                target.innerHTML = 'INVSBL SCORE ' + ("000000" + score).slice(-6);
+            } else if (extra == "hardcr") {
+                score = score + 15;
+                target = document.getElementById("score");
+                target.innerHTML = 'HARDCORE SCORE ' + ("000000" + score).slice(-6);
+            } else if (extra == "novice") {
+                score = score + 10;
+                target = document.getElementById("score");
+                target.innerHTML = 'NOVICE SCORE ' + ("000000" + score).slice(-6);
+            } else {
+                score = score + 10;
+                target = document.getElementById("score");
+                target.innerHTML = 'SCORE ' + ("000000" + score).slice(-6);
+            }
+        }
+
+        function enemymovement() {
+            let em = 8
+            while (em >= 0) {
+                var enemymovement40 = "item4" + em
+                var enemymovement30 = "item3" + em
+                var enemymovement20 = "item2" + em
+                var enemymovement10 = "item1" + em
+                var enemymovement00 = "item0" + em
+                var elColored40 = document.getElementById(enemymovement40);
+                var elColored30 = document.getElementById(enemymovement30);
+                var elColored20 = document.getElementById(enemymovement20);
+                var elColored10 = document.getElementById(enemymovement10);
+                var elColored00 = document.getElementById(enemymovement00);
+                var color40 = window.getComputedStyle(elColored40, '').background;
+                var color30 = window.getComputedStyle(elColored30, '').background;
+                var color20 = window.getComputedStyle(elColored20, '').background;
+                var color10 = window.getComputedStyle(elColored10, '').background;
+                var color00 = window.getComputedStyle(elColored00, '').background;
+                if (color40 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    elColored30.style = "background-color:#FF00FF; width:66px; height:90px;";
+                    elColored40.style = "background-color:skyblue; width:66px; height:90px;";
+                }
+                if (color30 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    elColored20.style = "background-color:#FF00FF; width:66px; height:90px;";
+                    if (color40 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    } else {
+                        elColored30.style = "background-color:skyblue; width:66px; height:90px;";
+                    }
+                }
+                if (color20 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    elColored10.style = "background-color:#FF00FF; width:66px; height:90px;";
+                    if (color30 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    } else {
+                        elColored20.style = "background-color:skyblue; width:66px; height:90px;";
+                    }
+                }
+                if (color10 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    elColored00.style = "width:66px; height:90px; background-color:#FF00FF;";
+                    if (color20 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    } else {
+                        elColored10.style = "background-color:skyblue; width:66px; height:90px;";
+                    }
+                }
+                if (color00 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    if (color10 == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+                    } else {
+                        elColored00.style = "width:66px; height:90px; background-color:skyblue;";
+                    }
+                }
+                em = em - 1
+            }
+        }
+
+        function playermovement() {
+            let mymovement = "item0" + n;
+            var myelColored = document.getElementById(mymovement);
+            var mycolor = window.getComputedStyle(myelColored, '').background;
+            console.log("mycolor=" + mycolor)
+
+            if (mycolor == "rgb(255, 0, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+
+                grid20 = document.getElementById("item20");
+                grid20.remove();
+                grid21 = document.getElementById("item21");
+                grid21.remove();
+                grid27 = document.getElementById("item27");
+                grid27.remove();
+                grid28 = document.getElementById("item28");
+                grid28.remove();
+                finish24 = document.getElementById("item24")
+                finish24.style = "height:90px; background-color:white; grid-row: 3 / 4; grid-column: 3 / 8; border-radius: 20px 20px 0px 0px;";
+                let gameovpng = document.createElement("img");
+                gameovpng.src = "gameover.png";
+                finish24.appendChild(gameovpng);
+
+                grid10 = document.getElementById("item10");
+                grid10.remove();
+                grid11 = document.getElementById("item11");
+                grid11.remove();
+                grid17 = document.getElementById("item17");
+                grid17.remove();
+                grid18 = document.getElementById("item18");
+                grid18.remove();
+                finish14 = document.getElementById("item14")
+                finish14.style = "height:90px; background-color:white; grid-row: 4 / 5; grid-column: 3 / 8; border-radius: 0px 0px 20px 20px;";
+                let tweetpng = document.createElement("img");
+                tweetpng.src = "tweet.png";
+                tweetpng.onclick = function () {
+                    tweet();
+                };
+                finish14.appendChild(tweetpng);
+
+                let glayonL = document.getElementById("cL");
+                let glayonR = document.getElementById("cR");
+                let glayonA = document.getElementById("cA");
+                glayonL.disabled = true
+                glayonR.disabled = true
+                glayonA.disabled = true
+                document.removeEventListener('keydown', keypress_iventLR);
+                document.removeEventListener('keydown', keypress_iventZ);
+                seGAMEOVER.play();
+                bgm.pause();
+                seSTART.pause();
+                if (extra == "invsbl") {
+                    target = document.getElementById("item0" + n);
+                    let chara = document.createElement("img");
+                    chara.src = "chara.png";
+                    target.appendChild(chara);
+                }
+            } else {
+                zcounter();
+            }
+        }
+
+
+
+        function zcounter() {
+
+            if (score < 100) {
+                let glayonA = document.getElementById("cA");
+                glayonA.style = ""
+                glayonA.disabled = false
+                document.addEventListener('keydown', keypress_iventZ);
+            } else {
+
+                if (extra == "novice" || extra == "master") {
+                    if (zcount > 3) {
+                        let glayonA = document.getElementById("cA");
+                        glayonA.style = ""
+                        glayonA.disabled = false
+                        document.addEventListener('keydown', keypress_iventZ);
+                        zcount = zcount + 1
+                    } else {
+                        zcount = zcount + 1
+                    }
+                } else {
+                    if (zcount > 8) {
+                        let glayonA = document.getElementById("cA");
+                        glayonA.style = ""
+                        glayonA.disabled = false
+                        document.addEventListener('keydown', keypress_iventZ);
+                        zcount = zcount + 1
+                    } else {
+                        zcount = zcount + 1
+                    }
+
+                }
+            }
+            console.log("zcount=" + zcount)
+
+        }
+
+        function keypress_iventLR(e) {
+            if (e.key === 'ArrowLeft') {
+                L();
+            } else if (e.key === 'ArrowRight') {
+                R();
+            } else if (e.key === '1') {
+                L();
+            } else if (e.key === '3') {
+                R();
+            }
+            return false;
+        }
+
+        function keypress_iventZ(e) {
+            if (e.key === 'z' || e.key === 'Z') {
+                Z();
+            } else if (e.key === '2') {
+                Z();
+            }
+            return false;
+        }
+
+        function keypress_iventEnter(e) {
+            if (e.key === 'Enter') {
+                start();
+            } else if (e.key === '5') {
+                start();
+            }
+            return false;
+        }
+
+        function bt1() {
+            c = 1
+            let title1 = document.getElementById('titlesc');
+            let title2 = document.getElementById('titlecr');
+            let title3 = document.getElementById('titlemn');
+            title1.remove();
+            title2.remove();
+            title3.remove();
+
+            target10 = document.getElementById("item34");
+            let manualflame = document.createElement("div");
+            manualflame.id = "titlemn";
+            target10.appendChild(manualflame);
+
+            target11 = document.getElementById("item14");
+            let returntitle1 = document.createElement("div");
+            returntitle1.id = "titlecr";
+            target11.appendChild(returntitle1);
+
+            target12 = document.getElementById("titlemn");
+            let manual = document.createElement("img");
+            manual.src = "rule.png";
+            target12.appendChild(manual);
+
+            target13 = document.getElementById("titlecr");
+            let returntitle2 = document.createElement("img");
+            returntitle2.onclick = function () {
+                reset();
+            };
+            returntitle2.src = "bt3.png";
+            target13.appendChild(returntitle2);
+            extratitleoff();
+
+        }
+
+        function bt2() {
+            c = 1
+            let title1 = document.getElementById('titlesc');
+            let title2 = document.getElementById('titlecr');
+            let title3 = document.getElementById('titlemn');
+            title1.remove();
+            title2.remove();
+            title3.remove();
+
+            target10 = document.getElementById("item34");
+            let manualflame = document.createElement("div");
+            manualflame.id = "titlemn";
+            target10.appendChild(manualflame);
+
+            target11 = document.getElementById("item14");
+            let returntitle1 = document.createElement("div");
+            returntitle1.id = "titlecr";
+            target11.appendChild(returntitle1);
+
+            target12 = document.getElementById("titlemn");
+            let manual = document.createElement("div");
+            manual.style = "text-align:left;"
+            manual.innerHTML = "〇制作情報<br>　作者：にすみん（@Nispectre）<br><br>〇素材情報<br>　Illustration：爽（@frais_glace）<br>　BGM：「Wings of my dream」/ Nismin<br>　SE：効果音ラボ（https://soundeffect-lab.info/)<br>　　　VOICEVOX（https://voicevox.hiroshiba.jp/）<br><br>1.0.31 for Online<br>・iPhone使用時の挙動の悪さを改善<br>・iPhone使用時のダブルタップによる拡大を阻止";
+            target12.appendChild(manual);
+
+            target13 = document.getElementById("titlecr");
+            let returntitle2 = document.createElement("img");
+            returntitle2.src = "bt3.png";
+            returntitle2.onclick = function () {
+                reset();
+            };
+            target13.appendChild(returntitle2);
+            extratitleoff();
+        }
+
+        function bt4() {
+            c = 1
+            let title1 = document.getElementById('titlesc');
+            let title2 = document.getElementById('titlecr');
+            let title3 = document.getElementById('titlemn');
+            title1.remove();
+            title2.remove();
+            title3.remove();
+
+            target10 = document.getElementById("item34");
+            let manualflame = document.createElement("div");
+            manualflame.id = "titlemn";
+            target10.appendChild(manualflame);
+
+            target11 = document.getElementById("item14");
+            let returntitle1 = document.createElement("div");
+            returntitle1.id = "titlecr";
+            target11.appendChild(returntitle1);
+            target13 = document.getElementById("titlecr");
+            let returntitle2 = document.createElement("img");
+            returntitle2.src = "bt3.png";
+            returntitle2.onclick = function () {
+                reset();
+            };
+            target13.appendChild(returntitle2);
+
+            target12 = document.getElementById("titlemn");
+            let manual = document.createElement("div");
+            manual.style = "text-align: center";
+            manual.innerHTML = "このゲームを楽しみ尽くしたあなたに贈る特別なモード<br>パスワードを入力し、別モードをプレイしてみてください。<br><br>正しいパスワード以外を打つとノーマルモードに戻ります。<br>パスワードは半角小文字6文字です。注意して入力してください<br><br>"
+            target12.appendChild(manual);
+            let passwordform = document.createElement("form");
+            passwordform.method = "get"
+            passwordform.id = "passform"
+            target12.appendChild(passwordform)
+            targetform = document.getElementById("passform");
+            let passwordinput = document.createElement("input");
+            passwordinput.type = "text";
+            passwordinput.name = "extra";
+            targetform.appendChild(passwordinput);
+            let passwordbutton = document.createElement("input");
+            passwordbutton.type = "submit";
+            targetform.appendChild(passwordbutton);
+            extratitleoff();
+        }
+
+        function extratitleoff() {
+            titleextra = document.getElementById('titleextra');
+            titleextra.remove();
+        }
+
+        function setwidth() {
+            grid00 = document.getElementById("item00");
+            grid00.style = "width:66px; height:90px;";
+            grid01 = document.getElementById("item01");
+            grid01.style = "width:66px; height:90px;";
+            grid02 = document.getElementById("item02");
+            grid02.style = "width:66px; height:90px;";
+            grid03 = document.getElementById("item03");
+            grid03.style = "width:66px; height:90px;";
+            grid04 = document.getElementById("item04");
+            grid04.style = "width:66px; height:90px;";
+            grid05 = document.getElementById("item05");
+            grid05.style = "width:66px; height:90px;";
+            grid06 = document.getElementById("item06");
+            grid06.style = "width:66px; height:90px;";
+            grid07 = document.getElementById("item07");
+            grid07.style = "width:66px; height:90px;";
+            grid08 = document.getElementById("item08");
+            grid08.style = "width:66px; height:90px;";
+            grid10 = document.getElementById("item10");
+            grid10.style = "width:66px; height:90px;";
+            grid20 = document.getElementById("item20");
+            grid20.style = "width:66px; height:90px;";
+            grid30 = document.getElementById("item30");
+            grid30.style = "width:66px; height:90px;";
+            grid40 = document.getElementById("item40");
+            grid40.style = "width:66px; height:90px;";
+        }
+
+        function tweet() {
+            if (extra == "master" && score > 2000) {
+                var prize = "https://t.co/dme2u6tJhm"
+            } else if (extra == "master" || extra == "invsbl" || extra == "novice" || extra == "hardcr") {
+                if (score < 251) {
+                    var prize = "https://t.co/llaE11Xxpi"
+                } else if (score < 501) {
+                    var prize = "https://t.co/p6xJbKODWF"
+                } else if (score < 751) {
+                    var prize = "https://t.co/UZ2O4pRKyN"
+                } else if (score < 1001) {
+                    var prize = "https://t.co/xD5XmZpk9h"
+                } else if (score < 2001) {
+                    var prize = "https://t.co/Ao23nTENnj"
+                } else {
+                    var prize = "https://t.co/3U8w5Kq61a"
+                }
+            } else {
+                if (score < 251) {
+                    var prize = "https://t.co/llaE11Xxpi"
+                } else if (score < 501) {
+                    var prize = "https://t.co/RjBPHRrMc7"
+                } else if (score < 751) {
+                    var prize = "https://t.co/UZ2O4pRKyN"
+                } else if (score < 1001) {
+                    var prize = "https://t.co/xD5XmZpk9h"
+                } else if (score < 2001) {
+                    var prize = "https://t.co/eLyvEXU4py"
+                } else {
+                    var prize = "https://t.co/ooopPXLPOa"
+                }
+
+            }
+
+
+            if (extra == "master") {
+                open('https://twitter.com/intent/tweet?text=%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA-wisely%20avoider-%0A%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AE%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%A2%E3%83%BC%E3%83%89%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AF' + score + '%0A%23%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA%0A%E2%86%92http%3A%2F%2Fnismin.my-style.in%2Fwiselyavoider%2F%0A' + prize + '%20');
+            } else if (extra == "invsbl") {
+                open('https://twitter.com/intent/tweet?text=%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA-wisely%20avoider-%0A%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AE%E3%82%A4%E3%83%B3%E3%83%93%E3%82%B8%E3%83%96%E3%83%AB%E3%83%A2%E3%83%BC%E3%83%89%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AF' + score + '%0A%23%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA%0A%E2%86%92http%3A%2F%2Fnismin.my-style.in%2Fwiselyavoider%2F%0A' + prize + '%20');
+            } else if (extra == "novice") {
+                open('https://twitter.com/intent/tweet?text=%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA-wisely%20avoider-%0A%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AE%E3%83%8E%E3%83%BC%E3%83%93%E3%82%B9%E3%83%A2%E3%83%BC%E3%83%89%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AF' + score + '%0A%23%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA%0A%E2%86%92http%3A%2F%2Fnismin.my-style.in%2Fwiselyavoider%2F%0A' + prize + '%20');
+            } else if (extra == "hardcr") {
+                open('https://twitter.com/intent/tweet?text=%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA-wisely%20avoider-%0A%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AE%E3%83%8F%E3%83%BC%E3%83%89%E3%82%B3%E3%82%A2%E3%83%A2%E3%83%BC%E3%83%89%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AF' + score + '%0A%23%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA%0A%E2%86%92http%3A%2F%2Fnismin.my-style.in%2Fwiselyavoider%2F%0A' + prize + '%20');
+            } else {
+                open('https://twitter.com/intent/tweet?text=%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA-wisely%20avoider-%0A%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AE%E3%82%B9%E3%82%B3%E3%82%A2%E3%81%AF' + score + '%0A%23%E3%81%AB%E3%81%99%E3%81%BF%E3%82%93%E3%81%AE%E5%A4%A7%E5%86%92%E9%99%BA%0A%E2%86%92http%3A%2F%2Fnismin.my-style.in%2Fwiselyavoider%2F%0A' + prize + '%20');
+            }
+
+        }
+
+
+        function extracheck() {
+            var params = (new URL(document.location)).searchParams;
+            extra = params.get('extra');
+        }
+
+        function extratitle() {
+            extracheck();
+            console.log("extra=" + extra);
+            if (extra == 'master') {
+                extratitleoff();
+                let targetextra34 = document.getElementById("item24");
+                let extraflame = document.createElement("div");
+                extraflame.id = "titleextra";
+                extraflame.style.cssText = "font-weight: bold;" + "font-size: x-large;";
+                extraflame.innerHTML = "MASTER MODE"
+                targetextra34.appendChild(extraflame);
+
+                let targetextramanual = document.getElementById("extramanual");
+                let extramanualflame = document.createElement("div");
+                extramanualflame.id = "extramanualflame";
+                extramanualflame.style.cssText = "font-weight: bold;";
+                extramanualflame.innerHTML = "<br><br>☆MASTER MODEのルール☆<br>wisely avoiderを遊びつくしたプレイヤー向けの上級モード！<br><br>通常モードとの違いは以下のとおり<br>・毒床出現率：通常の1.3倍<br>・一歩進んだ際の得点上昇：15pt<br>・PD回復速度：5歩に1回<br><br>目指せMASTER MODE over2000！"
+                targetextramanual.appendChild(extramanualflame);
+                canstart();
+            } else if (extra == 'invsbl') {
+                extratitleoff();
+                let targetextra34 = document.getElementById("item24");
+                let extraflame = document.createElement("div");
+                extraflame.id = "titleextra";
+                extraflame.style.cssText = "font-weight: bold;" + "font-size: x-large;";
+                extraflame.innerHTML = "INVISIBLE MODE"
+                targetextra34.appendChild(extraflame);
+
+                let targetextramanual = document.getElementById("extramanual");
+                let extramanualflame = document.createElement("div");
+                extramanualflame.id = "extramanualflame";
+                extramanualflame.style.cssText = "font-weight: bold;";
+                extramanualflame.innerHTML = "<br><br>☆INVISIBLE MODEのルール☆<br>もう降参です。あなたのようなプレイヤーを待ってました。<br>ここまでやりこんだあなたなら、自機が見えずとも心の目でプレイできるはず！<br><br>通常モードとの違いは以下のとおり<br>・自機表示：オフ（ゲームオーバー時に見えるようになります）<br>・一歩進んだ際の得点上昇：15pt"
+                targetextramanual.appendChild(extramanualflame);
+                canstart();
+            } else if (extra == 'novice') {
+                extratitleoff();
+                let targetextra34 = document.getElementById("item24");
+                let extraflame = document.createElement("div");
+                extraflame.id = "titleextra";
+                extraflame.style.cssText = "font-weight: bold;" + "font-size: x-large;";
+                extraflame.innerHTML = "NOVICE MODE"
+                targetextra34.appendChild(extraflame);
+
+                let targetextramanual = document.getElementById("extramanual");
+                let extramanualflame = document.createElement("div");
+                extramanualflame.id = "extramanualflame";
+                extramanualflame.style.cssText = "font-weight: bold;";
+                extramanualflame.innerHTML = "<br><br>☆NOVICE MODEのルール☆<br>なかなか点数が伸び悩んでるあなたに向けた練習モード！<br><br>通常モードとの違いは以下のとおり<br>・PD回復速度：5歩に1回<br>・PD得点減少：50pt<br>"
+                targetextramanual.appendChild(extramanualflame);
+                canstart();
+            } else if (extra == 'hardcr') {
+                extratitleoff();
+                let targetextra34 = document.getElementById("item24");
+                let extraflame = document.createElement("div");
+                extraflame.id = "titleextra";
+                extraflame.style.cssText = "font-weight: bold;" + "font-size: x-large;";
+                extraflame.innerHTML = "HARDCORE MODE"
+                targetextra34.appendChild(extraflame);
+
+                let targetextramanual = document.getElementById("extramanual");
+                let extramanualflame = document.createElement("div");
+                extramanualflame.id = "extramanualflame";
+                extramanualflame.style.cssText = "font-weight: bold;";
+                extramanualflame.innerHTML = "<br><br>☆HARDCORE MODEのルール☆<br>バケモノプレーヤーに向けた異常難易度モード<br>ハンデなしのマスターモードを体験せよ！<br><br>通常モードとの違いは以下のとおり<br>・毒床出現率：通常の1.3倍<br>・一歩進んだ際の得点上昇：15pt"
+                targetextramanual.appendChild(extramanualflame);
+                canstart();
+            } else if (extra == 'nismin') {
+                extratitleoff();
+                let targetextra34 = document.getElementById("item24");
+                let extraflame = document.createElement("div");
+                extraflame.id = "titleextra";
+                extraflame.style.cssText = "font-weight: bold;" + "font-size: x-large;";
+                extraflame.innerHTML = "BGM「My Brave Song(Nismin)」"
+                targetextra34.appendChild(extraflame);
+                bgm = new Audio('se/brave.mp3');
+
+                let targetextramanual = document.getElementById("extramanual");
+                let extramanualflame = document.createElement("div");
+                extramanualflame.id = "extramanualflame";
+                extramanualflame.style.cssText = "font-weight: bold;";
+                extramanualflame.innerHTML = "<br><br>☆NORMAL MODE(nismin.ver)☆"
+                targetextramanual.appendChild(extramanualflame);
+                canstart();
+            } else {
+                extratitleoff();
+                let targetextra34 = document.getElementById("item24");
+                let extraflame = document.createElement("div");
+                extraflame.id = "titleextra";
+                extraflame.style.cssText = "font-weight: bold;" + "font-size: x-large;";
+                extraflame.innerHTML = "<br>"
+                targetextra34.appendChild(extraflame);
+                let targetextramanual = document.getElementById("extramanual");
+                let extramanualflame = document.createElement("div");
+                extramanualflame.id = "extramanualflame";
+                extramanualflame.style.cssText = "font-weight: bold;";
+                extramanualflame.innerHTML = "<br><br>☆NORMAL MODE☆"
+                targetextramanual.appendChild(extramanualflame);
+                canstart();
+            }
+        }
+
+        function canstart() {
+            startbutton = document.getElementById("stres");
+            startbutton.disabled = false;
+            document.addEventListener('keydown', keypress_iventEnter);
+        }
+
+        window.addEventListener("load", function () {
+            extratitle();
+        })
+    </script>
+</head>
+
+<body><IFRAME src="counter/cnt.php"  width="1" height="1" scrolling="NO" marginwidth="0" marginheight="0" title="カウンター" id="iframebox"></IFRAME>
+    <div class="screen">
+        <div id="score">SCORE 000000</div>
+        <div class="display">
+            <div id="item40"></div>
+            <div id="item41"></div>
+            <div id="item42"></div>
+            <div id="item43"></div>
+            <div id="item44"></div>
+            <div id="item45"></div>
+            <div id="item46"></div>
+            <div id="item47"></div>
+            <div id="item48"></div>
+            <div id="item30"></div>
+            <div id="item31"></div>
+            <div id="item32"></div>
+            <div id="item33"></div>
+            <div id="item34"></div>
+            <div id="item35"></div>
+            <div id="item36"></div>
+            <div id="item37"></div>
+            <div id="item38"></div>
+            <div id="item20"></div>
+            <div id="item21"></div>
+            <div id="item22"></div>
+            <div id="item23"></div>
+            <div id="item24">
+                <div id="titlesc"><img src="title.png"></div>
+                <div id="titlemn">
+                    <img src="bt1.png" onclick="bt1();">　
+                    <img src="bt2.png" onclick="bt2();">　
+                    <img src="bt4.png" onclick="bt4();">　
+                    <div id="titleextra" style="font-weight: bold; text-align: center; font-size: x-large;">Now
+                        Loading...</div>
+
+                </div>
+            </div>
+            <div id="item25"></div>
+            <div id="item26"></div>
+            <div id="item27"></div>
+            <div id="item28"></div>
+            <div id="item10"></div>
+            <div id="item11"></div>
+            <div id="item12"></div>
+            <div id="item13"></div>
+            <div id="item14">
+                <div id="titlecr">PRESS ENTER<br><br>※音が出ます。ご注意ください。<br>Presented by Nismin(@Nispectre)</div>
+            </div>
+            <div id="item15"></div>
+            <div id="item16"></div>
+            <div id="item17"></div>
+            <div id="item18"></div>
+            <div id="item00"></div>
+            <div id="item01"></div>
+            <div id="item02"></div>
+            <div id="item03"></div>
+            <div id="item04"></div>
+            <div id="item05"></div>
+            <div id="item06"></div>
+            <div id="item07"></div>
+            <div id="item08"></div>
+        </div>
+        <div class="controler">
+            <input type="image" src="2Lkey.png" id="cL" style="opacity: 0.5;" onclick="L();" disabled=true>　
+            <input type="image" src="2Rkey.png" id="cR" style="opacity: 0.5;" onclick="R();" disabled=true>　　　
+            <input type="image" src="2Zkey.png" id="cA" style="opacity: 0.5;" onclick="Z();" disabled=true><br><br>
+
+
+            <button style="width:100px;" id="stres" disabled=true onclick="start();">Start/Reset</button>
+        </div>
+        <div id="extramanual"></div>
+</body>
+
+</html>
