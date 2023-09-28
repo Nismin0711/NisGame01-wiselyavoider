@@ -3,7 +3,8 @@
 # にすみんの大冒険 -wisely avoider-
 ![タイトル画像](title.png)
 
-にすみんの大冒険 -wisely avoider- は、[にすみん（@Nispectre）](https://twitter.com/Nispectre)によって開発されたゲームです。
+Play!
+→[ゲームはこちら](http://nismin.my-style.in/wiselyavoider/)
 
 ## ゲームの概要
 新感覚2Dパズルアクションゲーム！
